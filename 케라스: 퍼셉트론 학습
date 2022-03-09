@@ -1,0 +1,31 @@
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import SGD
+
+# OR 데이터 구축
+x=[[0.0,0.0], [0.0,1.0], [1.0,0.0], [1.0,1.0]]
+y=[[-1], [1], [1], [1]]
+
+#신경망 구조 설계
+n_input=2
+n_output=1
+
+#units 매개변수는 현재 쌓고 있는 층의 텐서 크기를 지정하고 input_shape 는 이전 층의 텐서 크기를 지정함
+perceptron=Sequential()
+perceptron.add(Dense(units=n_output, activation='tanh', input_shape=(n_input,),
+                     kernel_initializer='random_uniform', bias_initializer='zeros'))
+#Dense 클래스로 쌓은 완전연결층을 보여줌
+#퍼셉트론은 출력 노드가 1개이므로 units은 1
+
+
+#신경망 학습
+perceptron.compile(loss='mse', optimizer=SGD
+                   (learning_rate=0.1), metrics=['mse'])
+perceptron.fit(x,y,epochs=500, verbose=2)
+#손실 함수로 MSE(평균제곱오차) 쓰고 옵티마이저로 SGD 쓰고, 학습 도중에 손실 함수 값을 측정해 출력한다.
+#epochs는 반복할 세대 수를 지정, x,y는 훈련 집합
+#verbose는 학습 도중에 발생하는 정보를 출력하는 방식을 지정(verbose=2 는 세대마다 한 줄을 출력)
+
+#학습된 신경망으로 예측
+res=perceptron.predict(x)
+print(res)
