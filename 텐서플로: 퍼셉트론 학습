@@ -1,0 +1,32 @@
+import tensorflow as tf
+x=[[0.0,0.0], [0.0,1.0], [1.0,0.0], [1.0,1.0]]
+y=[[-1], [1], [1], [1]]
+
+w=tf.Variable(tf.random.uniform([2,1], -0.5, 0.5)) #신경망 가중치 초기화
+b=tf.Variable(tf.zeros([1])) #신경망 가중치 초기화
+
+
+opt=tf.keras.optimizers.SGD(learning_rate=0.1) #스토케스틱 경사 하강법 옵티마이저를 생성해 opt 객체에 저장
+# 학습률에 해당하는 learning_rate는 0.1로 설정
+
+#전방 계산
+def forward():
+    s=tf.add(tf.matmul(x,w), b)
+    o=tf.tanh(s)
+    return o
+
+# 손실 함수 정의
+def loss():
+    o=forward()
+    return tf.reduce_mean((y-o)**2)
+
+#500세대까지 학습(100 세대마다 학습 정보 출력)
+for i in range(500):
+    opt.minimize(loss, var_list=[w,b])
+    if(i%100 == 0):
+        print('loss at epoch', i, '=', loss().numpy())
+        
+#학습된 퍼셉트론으로 OR 데이터를 예측
+
+o=forward()
+print(o)
