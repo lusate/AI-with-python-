@@ -12,7 +12,7 @@ x_train, x_test, y_train, y_test = train_test_split(digit.data, digit.target,
 #다층 퍼셉트론을 교차 검증으로 성능 평가(고요 시간 측정 포함)
 start = time.time() #시작 시간
 mlp = MLPClassifier(learning_rate_init=0.001, batch_size=32, max_iter=300, solver='sgd')
-prange = range(50, 1001, 50)
+prange = range(50, 1001, 50) #50부터 1000까지 50간걱으로 조사할 범위를 지정
 train_score, test_score = validation_curve(mlp, x_train, y_train, param_name="hidden_layer_sizes",
                                            param_range = prange, cv = 10, scoring = "accuracy", n_jobs=4)
 end = time.time() # 끝난 시간
